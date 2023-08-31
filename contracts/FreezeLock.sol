@@ -61,7 +61,7 @@ contract Lock {
     }
 
     /**
-     * Locked tokens in the contract with freeze lock rules
+     * @notice Locked tokens in the contract with freeze lock rules
      * @param _amount amount of the token to be locked in the contract
      */
     function lockToken(uint256 _amount) public onlyOperator {
@@ -73,7 +73,7 @@ contract Lock {
     }
 
     /**
-     * Request the amount of tokens before its unlocked
+     * @notice Request the amount of tokens before its unlocked
      * @param _amount request amount for unlock
      */
     function requestWithdraw(uint256 _amount) public onlyOperator {
@@ -96,7 +96,7 @@ contract Lock {
     }
 
     /**
-     * Withdraw the unlocked token amount after the freezing period
+     * @notice Withdraw the unlocked token amount after the freezing period
      * @param _requestId id for the unlocking request
      * @param receiver address of the accoun that receives the unlocked token
      */
@@ -130,7 +130,26 @@ contract Lock {
     }
 
     /**
-     * change the address of the contract owner address
+     * @notice Check the information of the withdrawl request
+     * @param _requestId id of the requested withdrawl
+     * @return freezeStartTime time of the freeze lock request
+     * @return freezeEndTime end time of the freeze lock
+     * @return unlockAmount requestd amount to be unlocked
+     * @return freezeStatus check if the token is clamimed after the 7 days freeze period
+     */
+    function viewWithdrawlRequest(
+        uint _requestId
+    ) public view returns (uint, uint, uint, Status) {
+        return (
+            freezeRequests[_requestId].freezeStartTime,
+            freezeRequests[_requestId].freezeEndTime,
+            freezeRequests[_requestId].unlockAmount,
+            freezeRequests[_requestId].freezeStatus
+        );
+    }
+
+    /**
+     * @notice change the address of the contract owner address
      * @param _owner  new owner of the contract
      */
     function changeOwner(address _owner) external onlyOwner {
@@ -138,7 +157,7 @@ contract Lock {
     }
 
     /**
-     * change the address of the contract operator address
+     * @notice change the address of the contract operator address
      * @param _operator new operator of the contract
      */
     function changeOperator(address _operator) external onlyOwner {
@@ -146,7 +165,7 @@ contract Lock {
     }
 
     /**
-     * Resuce chain native token that is sent by mistake to this contract
+     * @notice Resuce chain native token that is sent by mistake to this contract
      * @param to addresss of the account that recives the native token
      * @param amount ammount of the token trapped
      */
@@ -156,7 +175,7 @@ contract Lock {
     }
 
     /**
-     * Resuce BEP20 tokens that are sent by mistake to this contract
+     * @notice Resuce BEP20 tokens that are sent by mistake to this contract
      * @param token address of the token, that is trapped in the token
      * @param to addresss of the account that recives the native token
      * @param amount ammount of the token trapped
